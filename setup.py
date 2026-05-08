@@ -1,27 +1,55 @@
-import requests
+from __future__ import annotations
+
 import zipfile
+
 from os import listdir
 from os.path import isfile, join
 
-import pathlib
+from pathlib import Path
+import requests
 
-def check_image_folder(path:str) -> bool:
-    file = [f for f in listdir(path) if isfile(join(path, "images"))]
-    if not file:
+
+URL = "https://cdn.intra.42.fr/document/document/18556/leaves.zip"
+ZIP_NAME = "leaves.zip"
+EXTRACT_FOLDER = "images"
+
+def has_images_folder(folder : Path) -> bool:
+    if not folder.exists():
         return False
-    return True
+    return any(folder.iterdir())
 
-def main():
-    mypath = pathlib.Path(__file__).parent.resolve()
-    if not check_image_folder(mypath):
-        r = requests.get('https://cdn.intra.42.fr/document/document/18556/leaves.zip')
-        zip_name = "leaves.zip"
-        with open(zip_name, 'wb') as f:
-            f.write(r.content)
-    zip_path = join(mypath,'leaves.zip')
-    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-        zip_ref.extractall(mypath)
+def download_zip(dest: Path) -> None:
+    try:
+        r = requests.get(URL, timeout = 10)
+        r.raise_for_status()
+        dest.write_bytes(r.content)
+    except r.RequestException as e:
+        raise RuntimeError(f"Failed to download the file:{e}") from e
 
+def extract_zip(zip_path: Path, extract_to:Path) -> None:
+    try:
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
+            zip_ref.extractall(extract_to)
+    except zipfile.BadZipFile as e:
+        raise RuntimeError(f"invalid zip file: {zip_path}") from e
+
+def delete_zip(zip_path: Path) -> None:
+    try:
+        zip_path.unlink()
+    except FileNotFoundError as e:
+        print(f"Zip file not found in deletion attempt")
+
+
+def main() -> None:
+    base_path = Path(__file__).parent.resolve()
+    zip_path = base_path / ZIP_NAME
+    images_folder = base_path / EXTRACT_FOLDER
+
+    if not has_images_folder(images_folder):
+        if not zip_path.exists():
+            download_zip(zip_path)
+        extract_zip(zip_path, base_path)
+    delete_zip(zip_path)
 
 if __name__ == "__main__":
     main()
