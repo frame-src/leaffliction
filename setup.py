@@ -37,7 +37,7 @@ def delete_zip(zip_path: Path) -> None:
     try:
         zip_path.unlink()
     except FileNotFoundError as e:
-        print(f"Zip file not found in deletion attempt")
+        print(f"Zip file not found in deletion attempt: {e}")
 
 
 def main() -> None:

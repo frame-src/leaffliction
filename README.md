@@ -1,10 +1,31 @@
+# Project Overview
 
-Project divided in 3 parts:
+Project instructions:  
+[42 Subject PDF](https://cdn.intra.42.fr/pdf/pdf/94019/en.subject.pdf?utm_source=chatgpt.com)
 
-Part 1: Analysis of the Data Set
-   - Script in Distribution.py
-   - it takes as argument a directory path and fetch images in its subdirectories
-   - the program must then extract and analyze/understand the data set from the images and prompt pie charts and bar charts for each plant type
-   - the program must also retrieve the name of the directory in order to name the chart’s colones accordingly.
+---
 
+# Part 1 — Analysis of the Data Set
 
+## Program
+`Distribution.py`
+
+## Description
+The program takes a directory path as argument and recursively fetches images from its subdirectories.
+
+It must then:
+- extract and analyze the dataset from the images,
+- generate pie charts and bar charts for each plant type,
+- retrieve the directory names in order to properly label the chart columns.
+
+## Expected Features
+- Directory traversal
+- Image dataset analysis
+- Plant type classification
+- Pie chart generation
+- Bar chart generation
+- Automatic labeling based on folder names
+
+## Example
+```bash
+python Distribution.py ./dataset
