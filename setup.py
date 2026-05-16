@@ -19,6 +19,7 @@ def has_images_folder(folder : Path) -> bool:
     return any(folder.iterdir())
 
 def download_zip(dest: Path) -> None:
+    print("Downloading...")
     try:
         r = requests.get(URL, timeout = 10)
         r.raise_for_status()
@@ -27,6 +28,7 @@ def download_zip(dest: Path) -> None:
         raise RuntimeError(f"Failed to download the file:{e}") from e
 
 def extract_zip(zip_path: Path, extract_to:Path) -> None:
+    print("Extract file...")
     try:
         with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall(extract_to)
@@ -41,15 +43,16 @@ def delete_zip(zip_path: Path) -> None:
 
 
 def main() -> None:
+    print("Setting folder up...")
     base_path = Path(__file__).parent.resolve()
     zip_path = base_path / ZIP_NAME
     images_folder = base_path / EXTRACT_FOLDER
-
     if not has_images_folder(images_folder):
         if not zip_path.exists():
             download_zip(zip_path)
         extract_zip(zip_path, base_path)
     delete_zip(zip_path)
+    print("Setup done.")
 
 if __name__ == "__main__":
     main()

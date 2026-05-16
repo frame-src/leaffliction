@@ -4,6 +4,19 @@ Project instructions:
 [42 Subject PDF](https://cdn.intra.42.fr/pdf/pdf/94019/en.subject.pdf?utm_source=chatgpt.com)
 
 ---
+# Part 0 - Setup
+Create an venv
+```bash
+python3 -m venv path/to/venv
+source path/to/venv/bin/activate
+```
+Then install:
+```bash
+python3 -m pip install -r requirements.txt
+```
+Finally run "Setup.py"
+
+
 
 # Part 1 — Analysis of the Data Set
 
@@ -29,3 +42,4 @@ It must then:
 ## Example
 ```bash
 python Distribution.py ./dataset
+```

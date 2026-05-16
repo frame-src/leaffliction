@@ -14,6 +14,8 @@ def check_path(arg:str) -> None:
         if arg.lower() in value.name.lower():
             ls_folder.append(value.name)
 
+def 
+
 
 def main() -> None:
     check_path((sys.argv)[1])
